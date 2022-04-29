@@ -65,10 +65,10 @@ Throw the plugin into your `$VIMRUNTIME/plugin` directory, i.e `~/.vim/plugin/`.
 ```vim
 <leader>dm " delete matches, but limited to matches inside a visual selection
 <leader>DM " delete everything that does NOT match, but limited to (not) matches
-             inside a visual selection
+           " inside a visual selection
 <leader>ym " yank matches, but limited to matches inside a visual selection
 <leader>YM " yank everything that does NOT match, but limited to (not) matches
-             inside a visual selection
+           " inside a visual selection
 
 ```
 
