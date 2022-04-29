@@ -1,0 +1,107 @@
+## yankmatches.vim
+
+This plugin was originally made by Damian Conway.
+
+It allows you to perform various magic operations on the result of a previous
+`/search` (or any other search operation, like `*`).
+
+I have added a few things:
+
+* A `YankMatches` highlight group that you can use to visualize what lines you've
+  just yanked
+* Made sure that the yanked lines are available for putting from `unnamed` as
+well as the clipboard register (the system clipboard)
+* Tweaked so that `hlsearch` can still be active
+
+Examples:
+
+Extract all lines matching a `/cats` search operation for pasting somewhere else for further investigation:
+
+```vim
+/cats<cr>
+<leader>ym
+Gp
+```
+
+Now you will find all cats copied to the bottom of the buffer.
+
+
+Open a `vim` file, like your `.vimrc`:
+
+```vim
+/^\s*".*$
+<leader>DM
+```
+
+Now you will find that everything but the comments in your file is deleted.
+
+If you wanted to delete only the comments, the operation would be:
+
+```vim
+/^\s*".*$
+<leader>dm
+```
+
+
+### Installation
+
+Throw the plugin into your `$VIMRUNTIME/plugin` directory, i.e `~/.vim/plugin/`.
+
+### Configuration
+
+#### Mappings
+
+##### Normal mode mappings
+
+```vim
+<leader>dm " delete all matches
+<leader>DM " delete everything that does NOT match
+<leader>ym " yank all matches
+<leader>YM " yank everything that does NOT match
+```
+
+##### Visual mode mappings
+
+```vim
+<leader>dm " delete matches, but limited to matches inside a visual selection
+<leader>DM " delete everything that does NOT match, but limited to (not) matches
+             inside a visual selection
+<leader>ym " yank matches, but limited to matches inside a visual selection
+<leader>YM " yank everything that does NOT match, but limited to (not) matches
+             inside a visual selection
+
+```
+
+##### Additional mappings
+
+Though not provided by default, you are suggested to modify your current
+`:nohlsearch` mapping to account for the `YankMatches` as well.
+
+The author uses this mapping:
+
+```vim
+" remove hlsearch, hlnext, matches, highlighted yanks, highlighted lines and redraw screen
+nnoremap <silent> <C-l> :call HLNextOff() <BAR> :nohlsearch <BAR> :hi clear YankedMatches <BAR> :call HighlightCurrentLine('clear')<cr>
+
+```
+
+#### Colors
+
+These are the default colors defined for the `YankMatches` highlight group, but
+you are free to override as you see fit.
+
+```vim
+highlight YankedMatches
+  \ ctermfg=bg ctermbg=214 cterm=bolditalic
+  \ guifg=bg guibg=#ffaf00 gui=none
+```
+
+### Screenshot
+
+![screenshot](./extra/screenshot.png?raw=true)
+
+What you see in the screenshot above: 
+
+* A search has been performed, `/line_\S\+`
+* `<leader>ym` has been executed
+* The statusline displays the number of lines yanked, in this case 10
