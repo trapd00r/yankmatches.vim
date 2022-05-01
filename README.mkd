@@ -9,8 +9,7 @@ I have added a few things:
 
 * A `YankMatches` highlight group that you can use to visualize what lines you've
   just yanked
-* Made sure that the yanked lines are available for putting from `unnamed` as
-well as the clipboard register (the system clipboard)
+* Added ability to configure what register to use for yanking/deleting `YankMatches#ClipboardRegister`; thank you [joshukraine](https://github.com/joshukraine/yankmatches/blob/e88fa4e21ac12059f3a6c51709baebb3dbec454d/plugin/yankmatches.vim#L83)
 * Tweaked so that `hlsearch` can still be active
 
 Examples:
@@ -69,6 +68,14 @@ Throw the plugin into your `$VIMRUNTIME/plugin` directory, i.e `~/.vim/plugin/`.
 <leader>ym " yank matches, but limited to matches inside a visual selection
 <leader>YM " yank everything that does NOT match, but limited to (not) matches
            " inside a visual selection
+
+```
+##### Yanking register
+By default, the value of `&clipboard` is used for the yanking/deleting
+operations. This can however be overridden:
+
+```vim
+let g:YankMatches#ClipboardRegister = '*'
 
 ```
 
