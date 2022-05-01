@@ -78,9 +78,13 @@ function! ForAllMatches (command, options)
         let matched_line_nums = reverse(inverted_line_nums)
     endif
 
-    highlight YankedMatches
-      \ ctermfg=bg ctermbg=214 cterm=bolditalic
-      \ guifg=bg guibg=#ffaf00 gui=none
+    " Remove highlighting of previously yanked lines when yanking new results
+    for k in getmatches()
+      if k.group == 'YankedMatches'
+        let id = k.id
+        call matchdelete(id)
+      endif
+    endfor
 
     " Filter the original lines...
     let yanked = ""
@@ -96,6 +100,10 @@ function! ForAllMatches (command, options)
           silent! call matchaddpos("YankedMatches", [line_num], 1);
         endif
     endfor
+
+    highlight YankedMatches
+      \ ctermfg=bg ctermbg=214 cterm=bolditalic
+      \ guifg=bg guibg=#ffaf00 gui=none
 
     " Make yanked lines available for putting...
     " First however, check if the user has configured the option to change the
