@@ -65,7 +65,19 @@ function! ForAllMatches (command, options)
     let sensitive = &ignorecase && &smartcase && @/ =~ '\u' ? '\C' : ''
 
     " Identify the lines to be operated on...
-    exec 'silent lvimgrep /' . sensitive . @/ . '/j %'
+    " ... and create a temporary file if the buffer is unnamed
+    let l:target = expand('%')
+    let l:tempfile = ''
+    if l:target == ''
+        let l:tempfile = tempname()
+        silent execute 'write! ' . l:tempfile
+        let l:target = l:tempfile
+    endif
+    exec 'silent lvimgrep /' . sensitive . @/ . '/j ' . l:target
+    if l:tempfile != ''
+        call delete(l:tempfile)
+    endif
+
     let matched_line_nums
     \ = reverse(filter(map(getloclist(0), 'v:val.lnum'), 'start_line <= v:val && v:val <= end_line'))
 
